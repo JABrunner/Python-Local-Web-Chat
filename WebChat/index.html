@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Web Chat with Python</title>    
+    <!-- Load Scripts here-->
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.js"> </script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body style ="text-align: center; font-family: Arial, serif; font-size: 14pt;">
+    <!--Connect to Local Host-->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var socket = io.connect("http://192.168.1.135:5000")
+            socket.on('connect', function() {
+                socket.send("User Connected!");
+            })
+        })
+        
+        socket.on('message', function(data){
+            $('#messages').append($('<p>').text(data));
+
+                $('#sendBtn').on('click', function(){
+                    socket.send($('#username').val() + ": " + $('#message'.val()));
+                    $('#message').val('');
+                });
+        })
+    </script>
+<div id="messages" style="margin: 0 auto; width: 60%; text-align: left" min-height:300px;>
+
+</div>
+<input type="text" id="username" placeholder="Username">
+<input type="text" id="message" placeholder="Message">
+<button id="sendBtn">Send</button>
+</body>
+
+</html>
